@@ -1,49 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Regular CSS for better compatibility */
 body {
-    background-color: slategray;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    height: 100vh;
-    margin: 0;
+  background-color: slategray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
 }
 
 #canvas {
-    border: 3px solid black;
-    background-color: dimgray;
-    padding: 5px;
-    border-radius: 10px;
+  border: 3px solid black;
+  background-color: dimgray;
+  padding: 5px;
+  border-radius: 10px;
 }
 
 .btn {
-    padding: 10px 20px;
-    font-size: 16px;
-    color: white;
-    background-color: #520dc2;
-    border: 3px solid black;
-    border-radius: 10px;
-    cursor: pointer;
-    margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #520dc2;
+  border: 3px solid black;
+  border-radius: 10px;
+  cursor: pointer;
+  margin: 10px;
+  transition: background-color 0.3s;
 }
 
 .btn:hover {
-    background-color: #218838;
+  background-color: #218838;
 }
 
 #controls {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
 }
 
 #score {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 24px;
-    color: white;
-    background-color: black;
-    padding: 5px;
-    border-radius: 10px;
-    text-align: center;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  color: white;
+  background-color: black;
+  padding: 5px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+/* Point Popup Animation */
+.scale-in-center {
+  animation: scale-in-center 0.3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+@keyframes scale-in-center {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Player colors */
+.player1-color {
+  color: #4f46e5; /* indigo-600 */
+}
+
+.player2-color {
+  color: #db2777; /* pink-600 */
+}
+
+/* Countdown animation */
+.countdown-animation {
+  animation: countdown 1s ease-out forwards;
+}
+
+@keyframes countdown {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  20% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+
+/* Winner animation */
+.winner-animation {
+  animation: winner-pulse 1.5s infinite alternate;
+}
+
+@keyframes winner-pulse {
+  0% {
+    transform: scale(1);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  }
+  100% {
+    transform: scale(1.1);
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8), 0 0 30px rgba(255, 215, 0, 0.6);
+  }
 }

@@ -1,44 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>Ping Pong Game</title>
+    <title>Ping Pong Showdown</title>
+    <!-- Link to your compiled Tailwind CSS -->
+    <link href="./dist/output.css" rel="stylesheet" />
+    <link href="./style.css" rel="stylesheet" />
   </head>
   <body
-    class="bg-slate-600 flex flex-col items-center justify-center min-h-screen m-0 relative text-white"
+    class="bg-gradient-to-br from-slate-800 via-slate-900 to-black flex flex-col items-center justify-center min-h-screen text-white relative"
   >
-    <canvas
-      id="canvas"
-      width="800"
-      height="400"
-      class="border-4 border-black bg-gray-700 p-2 rounded-xl shadow-lg max-w-full h-auto"
-    >
-    </canvas>
+    <!-- Title -->
+    <header class="mb-6 text-center">
+      <h1
+        class="text-4xl md:text-5xl font-extrabold tracking-wide drop-shadow-lg"
+      >
+        🏓 Ping Pong Showdown
+      </h1>
+      <p class="text-gray-300 mt-2 text-sm md:text-base">
+        Fast-paced fun for two players
+      </p>
+    </header>
 
-    <div
-      id="score"
-      class="absolute top-4 right-4 text-xl bg-black px-4 py-2 rounded-lg text-center shadow-md"
-    >
-      Player 1: 0 | Player 2: 0
+    <!-- Game Area -->
+    <div class="relative w-full max-w-5xl aspect-[2/1]">
+      <canvas
+        id="canvas"
+        width="800"
+        height="400"
+        class="w-full h-full border-4 border-slate-300 bg-gradient-to-b from-gray-700 to-gray-900 rounded-xl shadow-2xl"
+      >
+      </canvas>
+
+      <!-- Scoreboard -->
+      <div
+        id="score"
+        class="absolute top-4 right-4 text-lg md:text-2xl font-bold bg-black/70 px-4 py-2 rounded-lg shadow-lg backdrop-blur-sm"
+      >
+        Player 1: 0 | Player 2: 0
+      </div>
     </div>
 
-    <div id="controls" class="flex gap-4 mt-6">
+    <!-- Custom Point Popup -->
+    <div id="point-popup" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+      <div class="absolute inset-0 bg-black/50 backdrop-blur-sm"></div>
+      <div class="relative bg-gradient-to-br from-indigo-800 to-purple-900 p-8 rounded-xl shadow-2xl transform transition-all scale-in-center">
+        <h2 id="point-message" class="text-3xl font-bold text-white mb-4 text-center">Point!</h2>
+        <button id="continue-btn" class="w-full px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg shadow-md transition-colors">
+          Continue
+        </button>
+      </div>
+    </div>
+    
+    <!-- Countdown Overlay -->
+    <div id="countdown-overlay" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+      <div class="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
+      <div class="relative text-9xl font-extrabold text-white drop-shadow-lg scale-in-center" id="countdown-number">3</div>
+    </div>
+    
+    <!-- Win Popup -->
+    <div id="win-popup" class="fixed inset-0 flex items-center justify-center z-50 hidden">
+      <div class="absolute inset-0 bg-black/70 backdrop-blur-md"></div>
+      <div class="relative bg-gradient-to-br from-indigo-900 to-purple-900 p-8 rounded-xl shadow-2xl transform transition-all scale-in-center max-w-md w-full">
+        <div class="flex justify-center mb-6">
+          <div class="w-20 h-20 bg-yellow-400 rounded-full flex items-center justify-center">
+            <span class="text-4xl">🏆</span>
+          </div>
+        </div>
+        <h2 id="winner-message" class="text-4xl font-bold text-white mb-6 text-center">Player 1 Wins!</h2>
+        <p class="text-gray-200 mb-8 text-center">Final Score: <span id="final-score"></span></p>
+        <div class="flex flex-col gap-3">
+          <button id="new-game-btn" class="w-full px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg shadow-md transition-colors">
+            New Game
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div id="controls" class="flex flex-wrap gap-4 mt-8">
+      <!-- Win Score Setting -->
+      <div class="flex items-center bg-gray-800 p-3 rounded-lg shadow-md">
+        <label for="win-score" class="mr-3 font-medium">Win Score:</label>
+        <select id="win-score" class="bg-slate-700 text-white px-3 py-2 rounded border border-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <option value="5">5 Points</option>
+          <option value="10" selected>10 Points</option>
+          <option value="15">15 Points</option>
+          <option value="20">20 Points</option>
+          <option value="0">Endless</option>
+        </select>
+      </div>
+      
+      <!-- Difficulty Selector -->
+      <div class="flex items-center bg-gray-800 p-3 rounded-lg shadow-md">
+        <label for="difficulty" class="mr-3 font-medium">Difficulty:</label>
+        <select id="difficulty" class="bg-slate-700 text-white px-3 py-2 rounded border border-slate-600 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          <option value="easy">Easy</option>
+          <option value="medium" selected>Medium</option>
+          <option value="hard">Hard</option>
+          <option value="impossible">Impossible</option>
+        </select>
+      </div>
+      
       <button
         id="start-btn"
-        class="px-6 py-2 text-lg font-semibold text-white bg-purple-700 border-2 border-black rounded-lg hover:bg-green-600 transition duration-300"
+        class="px-6 py-3 text-lg font-semibold text-white bg-indigo-600 border-2 border-indigo-400 rounded-lg shadow-md hover:bg-green-500 hover:border-green-300 transition-all duration-300 ease-in-out"
       >
-        Start Game
+        ▶ Start Game
       </button>
       <button
         id="reset-btn"
-        class="px-6 py-2 text-lg font-semibold text-white bg-purple-700 border-2 border-black rounded-lg hover:bg-green-600 transition duration-300"
+        class="px-6 py-3 text-lg font-semibold text-white bg-pink-600 border-2 border-pink-400 rounded-lg shadow-md hover:bg-red-500 hover:border-red-300 transition-all duration-300 ease-in-out"
       >
-        Reset Game
+        🔄 Reset Game
       </button>
     </div>
 
-    <script src="game.js"></script>
-    <script src="movement.js"></script>
+    <!-- Scripts -->
+    <script src="game.js" type="module"></script>
   </body>
 </html>
