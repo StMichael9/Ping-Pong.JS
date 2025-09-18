@@ -5,7 +5,7 @@
 
 Overview: 
 A simple Ping Pong game built with HTML, CSS, and JavaScript.
-Players can control the left paddle with their mouse while the right paddle is controlled by a basic AI.
+Players can control the left paddle with their mouse, while the right paddle is controlled by a basic AI.
 
 🎮 Features
 
@@ -19,7 +19,6 @@ Restart and Start buttons for controlling gameplay
 
 Responsive design with a centered canvas
 
-canvas
 
 🚀 How to Play
 
@@ -38,3 +37,4 @@ HTML5 Canvas for rendering
 JavaScript (ES6) for game logic
 
 TailwindV3  for styling
+
