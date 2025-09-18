@@ -1,6 +1,9 @@
 
-🏓  Ping Pong Showdown
+🏓  Ping Pong Showdown 
 
+🚀 Live Demo Check it out here: https://ping-pong-nine-beta.vercel.app
+
+Overview: 
 A simple Ping Pong game built with HTML, CSS, and JavaScript.
 Players can control the left paddle with their mouse while the right paddle is controlled by a basic AI.
 
